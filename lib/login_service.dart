@@ -10,7 +10,6 @@ class LoginService {
     final String url = Constants.baseurl + 'Auth/login';
 
     var requestData = convert.jsonEncode(loginrequest.toJson());
-    try {
       final response = await http.post('$url',
           headers: {
             HttpHeaders.contentTypeHeader: 'application/json',
@@ -18,17 +17,14 @@ class LoginService {
           },
           body: requestData);
 
-      if (response.statusCode <= 200 || response.statusCode >= 400) {
+      if (response.statusCode <= 200 || response.statusCode < 400) {
         var result = response.body;
 
         var responseData =
             LoginResponseModel.fromJson(convert.jsonDecode(result));
         return (responseData);
       } else {
-        return throw Exception('Unable to connect with server');
+        throw Exception('Unable to connect with server santhosh');
       }
-    } catch (e) {
-      var s = e;
-    }
   }
 }

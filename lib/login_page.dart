@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_provider_login/base_provider.dart';
 import 'package:flutter_provider_login/login_presenter.dart';
 import 'package:flutter_provider_login/login_request_model.dart';
+import 'package:flutter_provider_login/router.dart';
 import 'package:provider/provider.dart';
-
-import 'login_response_model.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -12,47 +11,56 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  LoginRequestModel _loginRequestModel=LoginRequestModel();
-  LoginResponseModel _loginResponseModel;
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  LoginRequestModel _loginRequestModel = LoginRequestModel();
   @override
   Widget build(BuildContext context) {
     return BaseWidget<LoginPresenter>(
         model: LoginPresenter(loginService: Provider.of(context)),
         builder: (context, model, child) => Scaffold(
+            key: _scaffoldKey,
             appBar: AppBar(
               title: Text('Login'),
             ),
             body: Center(
-                child: Container(
-                    padding: const EdgeInsets.all(0.0),
-                    width: 300.0,
-                    height: 300.0,
-                    child: Column(children: <Widget>[
-                      TextField(
-                        onChanged: (_value) =>
-                            {_loginRequestModel.username = _value},
-                        decoration: InputDecoration(
-                          hintText: "Username",
-                        ),
-                      ),
-                      TextField(
-                        onChanged: (_value) =>
-                            {_loginRequestModel.password = _value},
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          hintText: "Password",
-                        ),
-                      ),
-                      RaisedButton(
-                        onPressed: () async {
-                          model.request = _loginRequestModel;
-                          await model.login(model.request);
-                        },
-                        child: Text('Login'),
-                        color: Colors.blue,
-                        textColor: Colors.white,
-                      ),
-                      Text(model.response?.role==null?"hello":model.response.role)
-                    ])))));
+                child:Container(
+                        padding: const EdgeInsets.all(0.0),
+                        width: 300.0,
+                        height: 300.0,
+                        child: Column(children: <Widget>[
+                          TextField(
+                            onChanged: (_value) =>
+                                {_loginRequestModel.username = _value},
+                            decoration: InputDecoration(
+                              hintText: "Username",
+                            ),
+                          ),
+                          TextField(
+                            onChanged: (_value) =>
+                                {_loginRequestModel.password = _value},
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              hintText: "Password",
+                            ),
+                          ),
+                          RaisedButton(
+                            onPressed: () async {
+                              model.request = _loginRequestModel;
+                              await model.login(model.request);
+                              if (model.isLoginSuccess) {
+                                Navigator.pushNamed(context, RoutePaths.Second);
+                              } else {
+                                SnackBar snackBar = new SnackBar(
+                                    content: new Text(model.error.toString()));
+                                _scaffoldKey.currentState
+                                    .showSnackBar(snackBar);
+                              }
+                            },
+                            child: Text('Login'),
+                            color: Colors.blue,
+                            textColor: Colors.white,
+                          ),
+                        ])))));
   }
 }

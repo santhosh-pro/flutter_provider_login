@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_provider_login/constants.dart';
 import 'package:flutter_provider_login/login_page.dart';
 import 'package:flutter_provider_login/provider_setup.dart';
+import 'package:flutter_provider_login/router.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  Provider.debugCheckInvalidValueType=null;
+  Provider.debugCheckInvalidValueType = null;
   Constants.setEnvironment(Environment.DEV);
   runApp(MyApp());
 }
@@ -20,7 +21,8 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: LoginPage(),
+          initialRoute: RoutePaths.Application,
+          onGenerateRoute: Router.generateRoute,
         ));
   }
 }
