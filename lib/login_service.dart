@@ -24,7 +24,7 @@ class LoginService {
             LoginResponseModel.fromJson(convert.jsonDecode(result));
         return (responseData);
       } else {
-        throw Exception('Unable to connect with server santhosh');
+        throw Exception(response.reasonPhrase.toString());
       }
   }
 }
