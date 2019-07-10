@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_provider_login/base_provider.dart';
+import 'package:flutter_provider_login/base_widget.dart';
 import 'package:flutter_provider_login/form_validator.dart';
 import 'package:flutter_provider_login/login_presenter.dart';
 import 'package:flutter_provider_login/login_request_model.dart';
@@ -28,6 +28,7 @@ class _LoginPageState extends State<LoginPage> {
             body: Center(
                 child: Form(
                     key: _formKey,
+                    autovalidate: true,
                     child: Container(
                         padding: const EdgeInsets.all(0.0),
                         width: 300.0,
